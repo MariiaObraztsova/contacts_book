@@ -1,5 +1,6 @@
 import React from 'react';
 import { Contact } from '../../types';
+import { ContactDetail } from '../ContactDetail/ContactDetail';
 import './ContactsList.css';
 
 type Props = {
@@ -10,6 +11,7 @@ type Props = {
 export class ContactsList extends React.Component<Props> {
   state = {
     isDeletingContact: false,
+    contactToView: null,
   }
 
   handleDeleteButton = () => {
@@ -25,50 +27,70 @@ export class ContactsList extends React.Component<Props> {
     this.setState({ isDeletingContact: false });
   }
 
+  handleViewDetailsButton = (contactId: number) => {
+    this.setState({
+      contactToView: this.props.contacts.find(item => item.id === contactId)
+    })
+  }
+
   render() {
     const { contacts } = this.props;
     const { isDeletingContact } = this.state;
 
     return (
-      <ul className="ContactsList">
-        {contacts.map(contact => (
-          <li key={contact.id} className="ContactsList__item">
-            <strong>
-              {contact.name}
-            </strong>
+      <div className="container">
+        <ul className="ContactsList">
+          {contacts.map(contact => (
+            <li key={contact.id} className="ContactsList__item">
+              <div className="ContactsList__contactInfo">
+                <strong>
+                  {contact.name}
+                </strong>
 
-            {contact.phone}
+                {contact.phone}
+              </div>
 
-            <button
-              type="button"
-              onClick={this.handleDeleteButton}>
-              Delete
-            </button>
-
-            <button type="button">
-              View contact details
-            </button>
-
-            {isDeletingContact && (
-              <div>
+              <div className="ContactsList__buttonsContainer">
                 <button
                   type="button"
-                  onClick={() => this.handleSureButton(contact.id)}
-                >
-                  Sure
+                  className="ContactsList__button"
+                  onClick={this.handleDeleteButton}>
+                  Delete
                 </button>
 
                 <button
                   type="button"
-                  onClick={this.handleCancelButton}
+                  className="ContactsList__button"
+                  onClick={() => this.handleViewDetailsButton(contact.id)}
                 >
-                  Cancel
+                  View details
                 </button>
               </div>
-            )}
-          </li>
-        ))}
-      </ul>
+
+              {isDeletingContact && (
+                  <div className="module">
+                    <button
+                      type="button"
+                      onClick={() => this.handleSureButton(contact.id)}
+                    >
+                      Sure
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={this.handleCancelButton}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
+            </li>
+          ))}
+        </ul>
+        {this.state.contactToView && (
+          <ContactDetail contact={this.state.contactToView}/>
+        )}
+      </div>
     );
   }
 }

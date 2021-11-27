@@ -94,6 +94,7 @@ class App extends React.Component<{}, State> {
         {isAddingContact ? (
             <button
               type="button"
+              className="App__button"
               onClick={this.handleCancelButton}
             >
               Cancel
@@ -101,6 +102,7 @@ class App extends React.Component<{}, State> {
           ) : (
             <button
               type="button"
+              className="App__button"
               onClick={this.handleAddContactButton}
             >
               Add new contact
@@ -109,7 +111,10 @@ class App extends React.Component<{}, State> {
         }
 
         {isAddingContact && (
-          <form onSubmit={this.handleSubmittingNewContact}>
+          <form
+            className="App_form"
+            onSubmit={this.handleSubmittingNewContact}
+          >
             <label htmlFor="contactName">
               Name:
               <input
@@ -132,7 +137,10 @@ class App extends React.Component<{}, State> {
               />
             </label>
 
-            <button type="submit">
+            <button
+              type="submit"
+              className="App__button"
+            >
               Add
             </button>
           </form>

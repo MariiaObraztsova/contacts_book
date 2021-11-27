@@ -1,3 +1,27 @@
-.App {
-  text-align: center;
+:root {
+  background-color: bisque;
 }
+
+.App {
+  padding: 20px;
+}
+.App__button {
+  height: 30px;
+  width: 150px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid black;
+  transition: background-color 0.5s, border 0.5s;
+}
+.App__button:hover {
+  cursor: pointer;
+  background-color: #ffd097;
+  border: 1px solid transparent;
+}
+.App_form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/*# sourceMappingURL=App.css.map */
