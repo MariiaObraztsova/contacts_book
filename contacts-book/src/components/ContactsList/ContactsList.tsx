@@ -6,6 +6,11 @@ import './ContactsList.css';
 type Props = {
   contacts: Contact[],
   deleteContact: (contactId: number) => void,
+  handleAddingNewFieldToContact: (contactId: number,
+  fieldName: string,
+  fieldValue: string | number) => void,
+  handleDeletingFieldFromContact: (contactId: number,
+    fieldName: string) => void,
 }
 
 export class ContactsList extends React.Component<Props> {
@@ -28,9 +33,15 @@ export class ContactsList extends React.Component<Props> {
   }
 
   handleViewDetailsButton = (contactId: number) => {
-    this.setState({
-      contactToView: this.props.contacts.find(item => item.id === contactId)
-    })
+    if (this.state.contactToView === null) {
+      this.setState({
+        contactToView: this.props.contacts.find(item => item.id === contactId)
+      })
+    } else {
+      this.setState({
+        contactToView: null,
+      })
+    }
   }
 
   render() {
@@ -63,12 +74,15 @@ export class ContactsList extends React.Component<Props> {
                   className="ContactsList__button"
                   onClick={() => this.handleViewDetailsButton(contact.id)}
                 >
-                  View details
+                  {this.state.contactToView
+                    ? ('Cancel')
+                    : ('View details')
+                  }
                 </button>
               </div>
 
               {isDeletingContact && (
-                  <div className="module">
+                  <div>
                     <button
                       type="button"
                       onClick={() => this.handleSureButton(contact.id)}
@@ -88,7 +102,11 @@ export class ContactsList extends React.Component<Props> {
           ))}
         </ul>
         {this.state.contactToView && (
-          <ContactDetail contact={this.state.contactToView}/>
+          <ContactDetail
+            contact={this.state.contactToView}
+            handleAddingNewFieldToContact={this.props.handleAddingNewFieldToContact}
+            handleDeletingFieldFromContact={this.props.handleDeletingFieldFromContact}
+          />
         )}
       </div>
     );

@@ -1,0 +1,16 @@
+.ContactDetail {
+  width: 40vw;
+  height: max-content;
+  padding: 20px;
+
+  border-radius: 10px;
+  border: 1px solid;
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 10px;
+  }
+}

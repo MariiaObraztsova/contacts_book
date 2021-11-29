@@ -12,6 +12,10 @@ type State = {
   newContactPhone: string,
 }
 
+function hasKey<O>(obj: O, key: PropertyKey): key is keyof O {
+  return key in obj
+}
+
 class App extends React.Component<{}, State> {
   state = {
     contacts: users,
@@ -76,6 +80,27 @@ class App extends React.Component<{}, State> {
       contacts: [...prevState.contacts].filter(contact => contact.id !== contactId),
     }));
   };
+
+  handleAddingNewFieldToContact = (
+    contactId: number,
+    fieldName: string,
+    fieldValue: string | number) => {
+    const selectedContact = this.state.contacts.find(item => item.id === contactId);
+
+    if (selectedContact) {
+      Object.assign(selectedContact, {[fieldName]: fieldValue});
+    }
+  }
+
+  handleDeletingFieldFromContact = (
+    contactId: number,
+    fieldName: string) => {
+    const selectedContact = this.state.contacts.find(item => item.id === contactId);
+
+    if (selectedContact && hasKey(selectedContact, fieldName)) {
+      delete selectedContact[fieldName];
+    }
+  }
 
   render() {
     const {
@@ -150,6 +175,8 @@ class App extends React.Component<{}, State> {
           ? <ContactsList
             contacts={contacts}
             deleteContact={this.handleDeletingContact}
+            handleAddingNewFieldToContact={this.handleAddingNewFieldToContact}
+            handleDeletingFieldFromContact={this.handleDeletingFieldFromContact}
           />
           : (<h2> No contacts yet </h2>)
         }
